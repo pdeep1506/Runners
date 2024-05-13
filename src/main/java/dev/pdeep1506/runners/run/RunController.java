@@ -1,5 +1,6 @@
 package dev.pdeep1506.runners.run;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class RunController {
    Run findById(@PathVariable Integer id) {
       Optional<Run> run = runRepository.FindById(id);
       if(run.isEmpty()){
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+          throw new RunNotFoundException();
       }
       else{
           return run.get();
@@ -42,7 +43,7 @@ public class RunController {
   // Post
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
-    void create(@RequestBody  Run run){
+    void create(@Valid  @RequestBody  Run run){
       runRepository.create(run);
     }
 
